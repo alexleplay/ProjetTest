@@ -1,0 +1,446 @@
+-- phpMyAdmin SQL Dump
+-- version 2.9.1.1
+-- http://www.phpmyadmin.net
+-- 
+-- Serveur: localhost
+-- Généré le : Vendredi 02 Janvier 2009 à 16:14
+-- Version du serveur: 5.0.27
+-- Version de PHP: 5.2.0
+-- 
+-- Base de données: `parcauto`
+-- 
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `categorie`
+-- 
+
+CREATE TABLE `categorie` (
+  `IDCATEGORIE` int(11) NOT NULL auto_increment,
+  `LIBELLECATEGORIE` char(15) NOT NULL,
+  PRIMARY KEY  (`IDCATEGORIE`),
+  UNIQUE KEY `CATEGORIE_PK` (`IDCATEGORIE`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- 
+-- Contenu de la table `categorie`
+-- 
+
+INSERT INTO `categorie` (`IDCATEGORIE`, `LIBELLECATEGORIE`) VALUES 
+(2, 'MiniBus'),
+(3, 'Voiture'),
+(4, 'Fourgonnette'),
+(1, 'Camion');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `contrat`
+-- 
+
+CREATE TABLE `contrat` (
+  `IDCONTRAT` int(11) NOT NULL auto_increment,
+  `IDFOURNISSEUR` int(11) NOT NULL,
+  `IDTYPECONTRAT` int(11) NOT NULL,
+  `IDVEHICULE` int(11) NOT NULL,
+  `DATEDEBCONTRAT` date default NULL,
+  `DATEFINCONTRAT` date default NULL,
+  `MONTANTCONTRAT` float default NULL,
+  PRIMARY KEY  (`IDCONTRAT`),
+  UNIQUE KEY `CONTRAT_PK` (`IDCONTRAT`),
+  KEY `CONCERNER_FK` (`IDVEHICULE`),
+  KEY `SIGNER_FK` (`IDFOURNISSEUR`),
+  KEY `APPARTENIR1_FK` (`IDTYPECONTRAT`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- 
+-- Contenu de la table `contrat`
+-- 
+
+INSERT INTO `contrat` (`IDCONTRAT`, `IDFOURNISSEUR`, `IDTYPECONTRAT`, `IDVEHICULE`, `DATEDEBCONTRAT`, `DATEFINCONTRAT`, `MONTANTCONTRAT`) VALUES 
+(1, 1, 1, 2, '2017-03-17', '2018-02-18', 123),
+(2, 2, 2, 2, NULL, NULL, 65000),
+(3, 1, 1, 2, '2006-04-10', '2007-12-12', 2300);
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `fournisseur`
+-- 
+
+CREATE TABLE `fournisseur` (
+  `IDFOURNISSEUR` int(11) NOT NULL auto_increment,
+  `NOMFOURNISSEUR` char(20) NOT NULL,
+  `RSFOURNISSEUR` char(20) default NULL,
+  `villefournisseur` varchar(20) NOT NULL,
+  `telfournisseur` char(9) NOT NULL,
+  PRIMARY KEY  (`IDFOURNISSEUR`),
+  UNIQUE KEY `FOURNISSEUR_PK` (`IDFOURNISSEUR`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+-- 
+-- Contenu de la table `fournisseur`
+-- 
+
+INSERT INTO `fournisseur` (`IDFOURNISSEUR`, `NOMFOURNISSEUR`, `RSFOURNISSEUR`, `villefournisseur`, `telfournisseur`) VALUES 
+(1, 'Axa Assurance', '33150', 'casablanca', '029838474'),
+(2, 'Wafa Assurance', '15960', 'marrakech', '06453263'),
+(3, 'Dacia Maroc', '44127', 'fes', '046577498'),
+(4, 'Peugeot Maroc', '54181', 'safi', '08576342'),
+(5, 'Mercedes Maroc', '29350', 'meknes', '03645536'),
+(6, 'Golf Maroc', '43896', 'jadida', '011224845'),
+(7, 'Reparation Maroc', '73865', 'taroudant', '065746655'),
+(8, 'Atelier Saada', '42690', 'Tanger', '056477574'),
+(9, 'Atelier zakaria', '345692', 'oujda', '05767574');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `individu`
+-- 
+
+CREATE TABLE `individu` (
+  `IDINDIVIDU` int(11) NOT NULL auto_increment,
+  `IDVEHICULE` int(11) default NULL,
+  `NOMINDIVIDU` char(15) NOT NULL,
+  `PRENOMINDIVIDU` char(15) NOT NULL,
+  `TELINDIVIDU` char(9) default NULL,
+  `CININDIVIDU` char(10) default NULL,
+  `PATHPHOTOINDIVIDU` char(200) default NULL,
+  `INTERNE` smallint(2) default NULL,
+  PRIMARY KEY  (`IDINDIVIDU`),
+  UNIQUE KEY `INDIVIDU_PK` (`IDINDIVIDU`),
+  KEY `CONDUIRE_FK` (`IDVEHICULE`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+-- 
+-- Contenu de la table `individu`
+-- 
+
+INSERT INTO `individu` (`IDINDIVIDU`, `IDVEHICULE`, `NOMINDIVIDU`, `PRENOMINDIVIDU`, `TELINDIVIDU`, `CININDIVIDU`, `PATHPHOTOINDIVIDU`, `INTERNE`) VALUES 
+(2, 2, 'diani', 'imane', '066060606', NULL, NULL, 1),
+(1, 1, 'zaini', 'zakaria', '027072837', 'BK333954', '', 1),
+(3, 3, 'admin', 'admin', '1111', NULL, NULL, 1),
+(7, 1, 'atfi', 'aicha', '1234556', 'HK576768', NULL, 0),
+(8, NULL, 'ahmed', 'salamat', '022504649', 'HG857694', NULL, 0);
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `intervention`
+-- 
+
+CREATE TABLE `intervention` (
+  `IDPANNE` int(11) NOT NULL,
+  `IDVEHICULE` int(11) NOT NULL,
+  `IDINDIVIDU` int(11) NOT NULL,
+  `IDINTERVENTION` int(11) NOT NULL,
+  `DATEPROBINTERVENTION` date NOT NULL,
+  `DATEINTERVENTION` date NOT NULL,
+  `DUREEINTERVENTION` smallint(6) NOT NULL,
+  `COMPTERENDUINTERVENTION` char(200) default NULL,
+  PRIMARY KEY  (`IDPANNE`,`IDVEHICULE`,`IDINDIVIDU`,`DATEINTERVENTION`),
+  UNIQUE KEY `INTERVENTION_PK` (`IDPANNE`,`IDVEHICULE`,`IDINDIVIDU`,`DATEINTERVENTION`),
+  KEY `INTERVENTION_FK` (`IDPANNE`),
+  KEY `INTERVENTION2_FK` (`IDVEHICULE`),
+  KEY `INTERVENTION3_FK` (`IDINDIVIDU`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- 
+-- Contenu de la table `intervention`
+-- 
+
+INSERT INTO `intervention` (`IDPANNE`, `IDVEHICULE`, `IDINDIVIDU`, `IDINTERVENTION`, `DATEPROBINTERVENTION`, `DATEINTERVENTION`, `DUREEINTERVENTION`, `COMPTERENDUINTERVENTION`) VALUES 
+(1, 1, 7, 1, '2000-01-01', '2000-01-01', 1, 'problème dans électiricité'),
+(2, 2, 8, 2, '2009-01-06', '2009-01-06', 2, 'réparation des phares'),
+(1, 2, 7, 0, '2000-01-01', '2000-01-01', 1, 'bonjour zakman'),
+(1, 2, 0, 0, '2000-01-01', '2008-01-01', 1, 'bonjour encore'),
+(1, 2, 0, 0, '2000-01-01', '2006-01-01', 1, 'bonjour zakaria'),
+(1, 2, 0, 0, '2000-01-01', '2000-03-01', 1, 'bonjour toi'),
+(1, 2, 0, 0, '2000-01-01', '2000-02-01', 1, 'bonjour moi');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `mission`
+-- 
+
+CREATE TABLE `mission` (
+  `IDMISSION` int(11) NOT NULL auto_increment,
+  `IDINDIVIDU` int(11) NOT NULL,
+  `IDVEHICULE` int(11) NOT NULL,
+  `OBJECTIFMISSION` char(100) NOT NULL,
+  `KMPARCOURUMISSION` smallint(6) default NULL,
+  `QTECARBURANTMISSION` smallint(6) default NULL,
+  `DATERESERVATION` date NOT NULL,
+  `DATEFINRESERVATION` date NOT NULL,
+  PRIMARY KEY  (`IDMISSION`),
+  UNIQUE KEY `MISSION_PK` (`IDMISSION`),
+  KEY `RESERVER_FK` (`IDVEHICULE`),
+  KEY `DEMANDER_FK` (`IDINDIVIDU`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- 
+-- Contenu de la table `mission`
+-- 
+
+INSERT INTO `mission` (`IDMISSION`, `IDINDIVIDU`, `IDVEHICULE`, `OBJECTIFMISSION`, `KMPARCOURUMISSION`, `QTECARBURANTMISSION`, `DATERESERVATION`, `DATEFINRESERVATION`) VALUES 
+(1, 1, 1, 'transporter les invités', 110, 8, '2000-01-01', '2000-01-01'),
+(2, 2, 2, 'transporter directeur', 40, 3, '2009-01-05', '2009-01-07'),
+(3, 1, 2, 'amener pc', 30, 3, '2009-01-12', '2009-01-13');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `modele`
+-- 
+
+CREATE TABLE `modele` (
+  `IDMODELE` int(11) NOT NULL auto_increment,
+  `LIBELLEMODELE` char(20) NOT NULL,
+  PRIMARY KEY  (`IDMODELE`),
+  UNIQUE KEY `MODELE_PK` (`IDMODELE`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- 
+-- Contenu de la table `modele`
+-- 
+
+INSERT INTO `modele` (`IDMODELE`, `LIBELLEMODELE`) VALUES 
+(1, 'Renault'),
+(2, 'Peugeot'),
+(3, 'Mercedes'),
+(4, 'Golf');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `panne`
+-- 
+
+CREATE TABLE `panne` (
+  `IDPANNE` int(11) NOT NULL auto_increment,
+  `LIBELLEPANNE` char(20) NOT NULL,
+  PRIMARY KEY  (`IDPANNE`),
+  UNIQUE KEY `PANNE_PK` (`IDPANNE`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+-- 
+-- Contenu de la table `panne`
+-- 
+
+INSERT INTO `panne` (`IDPANNE`, `LIBELLEPANNE`) VALUES 
+(1, 'electricité'),
+(2, 'phare');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `service`
+-- 
+
+CREATE TABLE `service` (
+  `IDSERVICE` int(11) NOT NULL auto_increment,
+  `LIBELLESERVICE` char(20) NOT NULL,
+  `CHEFSERVICE` char(20) default NULL,
+  PRIMARY KEY  (`IDSERVICE`),
+  UNIQUE KEY `SERVICE_PK` (`IDSERVICE`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- 
+-- Contenu de la table `service`
+-- 
+
+INSERT INTO `service` (`IDSERVICE`, `LIBELLESERVICE`, `CHEFSERVICE`) VALUES 
+(1, 'Ressources humains', 'Amine Benali'),
+(2, 'Comptable', 'Zaini Zakaria'),
+(3, 'Financier', 'Diani Imane');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `sinistre`
+-- 
+
+CREATE TABLE `sinistre` (
+  `IDSINISTRE` int(11) NOT NULL auto_increment,
+  `IDVEHICULE` int(11) NOT NULL,
+  `IDINDIVIDU` int(11) NOT NULL,
+  `LIEUSINISTRE` char(20) NOT NULL,
+  `DATESINISTRE` date NOT NULL,
+  `DEGATMATSINISTRE` char(100) default NULL,
+  `DEGATCORSINISTRE` char(100) default NULL,
+  `NBRDECESSINISTRE` smallint(6) default NULL,
+  PRIMARY KEY  (`IDSINISTRE`),
+  UNIQUE KEY `SINISTRE_PK` (`IDSINISTRE`),
+  KEY `ETRERESPONSABLE_FK` (`IDINDIVIDU`),
+  KEY `AVOIR1_FK` (`IDVEHICULE`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- 
+-- Contenu de la table `sinistre`
+-- 
+
+INSERT INTO `sinistre` (`IDSINISTRE`, `IDVEHICULE`, `IDINDIVIDU`, `LIEUSINISTRE`, `DATESINISTRE`, `DEGATMATSINISTRE`, `DEGATCORSINISTRE`, `NBRDECESSINISTRE`) VALUES 
+(1, 2, 2, 'route alal elfasy', '2008-12-15', 'pare prise cassé', 'pas de dégât corporel', 0),
+(2, 2, 2, '', '2000-01-01', '', '', 0),
+(3, 1, 1, 'mhamid', '2007-02-20', '', '', 3);
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `site`
+-- 
+
+CREATE TABLE `site` (
+  `IDSITE` int(11) NOT NULL auto_increment,
+  `EMPLACEMENTSITE` char(30) NOT NULL,
+  PRIMARY KEY  (`IDSITE`),
+  UNIQUE KEY `SITE_PK` (`IDSITE`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+-- 
+-- Contenu de la table `site`
+-- 
+
+INSERT INTO `site` (`IDSITE`, `EMPLACEMENTSITE`) VALUES 
+(1, 'Siège'),
+(2, 'Service Généraux');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `typecarburant`
+-- 
+
+CREATE TABLE `typecarburant` (
+  `IDTYPECARBURANT` int(11) NOT NULL auto_increment,
+  `LIBELLETYPECARBURANT` char(20) NOT NULL,
+  PRIMARY KEY  (`IDTYPECARBURANT`),
+  UNIQUE KEY `TYPECARBURANT_PK` (`IDTYPECARBURANT`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- 
+-- Contenu de la table `typecarburant`
+-- 
+
+INSERT INTO `typecarburant` (`IDTYPECARBURANT`, `LIBELLETYPECARBURANT`) VALUES 
+(1, 'diesel'),
+(2, 'super'),
+(3, 'sans plomb');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `typecontrat`
+-- 
+
+CREATE TABLE `typecontrat` (
+  `IDTYPECONTRAT` int(11) NOT NULL auto_increment,
+  `LIBELLETYPECONTRAT` char(20) NOT NULL,
+  PRIMARY KEY  (`IDTYPECONTRAT`),
+  UNIQUE KEY `TYPECONTRAT_PK` (`IDTYPECONTRAT`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- 
+-- Contenu de la table `typecontrat`
+-- 
+
+INSERT INTO `typecontrat` (`IDTYPECONTRAT`, `LIBELLETYPECONTRAT`) VALUES 
+(1, 'Location'),
+(2, 'Achat'),
+(3, 'Leasing');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `typevehicule`
+-- 
+
+CREATE TABLE `typevehicule` (
+  `IDTYPEVEHICULE` int(11) NOT NULL auto_increment,
+  `LIBELLETYPEVEHICULE` char(20) NOT NULL,
+  PRIMARY KEY  (`IDTYPEVEHICULE`),
+  UNIQUE KEY `TYPEVEHICULE_PK` (`IDTYPEVEHICULE`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- 
+-- Contenu de la table `typevehicule`
+-- 
+
+INSERT INTO `typevehicule` (`IDTYPEVEHICULE`, `LIBELLETYPEVEHICULE`) VALUES 
+(1, 'Service'),
+(2, 'Fonction'),
+(3, 'Vendu'),
+(4, 'En Commande');
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `vehicule`
+-- 
+
+CREATE TABLE `vehicule` (
+  `IDVEHICULE` int(11) NOT NULL auto_increment,
+  `IDMODELE` int(11) NOT NULL,
+  `IDTYPEVEHICULE` int(11) NOT NULL,
+  `IDFOURNISSEUR` int(11) NOT NULL,
+  `IDSITE` int(11) NOT NULL,
+  `IDCATEGORIE` int(11) NOT NULL,
+  `IDTYPECARBURANT` int(11) NOT NULL,
+  `IDSERVICE` int(11) default NULL,
+  `FOU_IDFOURNISSEUR` int(11) default NULL,
+  `NBRPORTEVEHICULE` smallint(6) default NULL,
+  `PUISSANCEVEHICULE` smallint(6) default NULL,
+  `NBRPLACEVEHICULE` smallint(6) default NULL,
+  `CARTEGRISEVEHICULE` char(12) NOT NULL,
+  `IMMATRICULATIONVEHICULE` char(12) NOT NULL,
+  `PATHPHOTOVEHICULE` char(255) default NULL,
+  `DATEAQUISITIONVEHICULE` date NOT NULL,
+  `DATEDEBUTASSURANCE` date NOT NULL,
+  `DATEFINASSURANCE` date NOT NULL,
+  `COUTASSURANCE` float NOT NULL,
+  `DATEDEBUTREPARATION` date default NULL,
+  `DATEFINREPARATION` date default NULL,
+  `COUTREPARATION` float default NULL,
+  PRIMARY KEY  (`IDVEHICULE`),
+  UNIQUE KEY `VEHICULE_PK` (`IDVEHICULE`),
+  KEY `APPARTENIR_FK` (`IDCATEGORIE`),
+  KEY `AFFECTER_FK` (`IDSERVICE`),
+  KEY `APPARTENIR2_FK` (`IDSITE`),
+  KEY `APPARTENIR4_FK` (`IDMODELE`),
+  KEY `ACHETER_FK` (`IDFOURNISSEUR`),
+  KEY `AVOIR_FK` (`IDTYPECARBURANT`),
+  KEY `ASSURER_FK` (`FOU_IDFOURNISSEUR`),
+  KEY `APPARTENIR3_FK` (`IDTYPEVEHICULE`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- 
+-- Contenu de la table `vehicule`
+-- 
+
+INSERT INTO `vehicule` (`IDVEHICULE`, `IDMODELE`, `IDTYPEVEHICULE`, `IDFOURNISSEUR`, `IDSITE`, `IDCATEGORIE`, `IDTYPECARBURANT`, `IDSERVICE`, `FOU_IDFOURNISSEUR`, `NBRPORTEVEHICULE`, `PUISSANCEVEHICULE`, `NBRPLACEVEHICULE`, `CARTEGRISEVEHICULE`, `IMMATRICULATIONVEHICULE`, `PATHPHOTOVEHICULE`, `DATEAQUISITIONVEHICULE`, `DATEDEBUTASSURANCE`, `DATEFINASSURANCE`, `COUTASSURANCE`, `DATEDEBUTREPARATION`, `DATEFINREPARATION`, `COUTREPARATION`) VALUES 
+(2, 2, 1, 2, 1, 2, 2, 0, NULL, 3, 180, 4, '854093', '2-B-5498', '../images/v2.jpg', '2008-12-01', '2008-01-01', '2008-01-01', 2700, NULL, NULL, NULL),
+(1, 1, 1, 1, 1, 1, 1, 0, NULL, 4, 154, 5, '154678', '1-A-2345', '../images/v1.jpg', '2008-12-01', '2008-01-01', '2008-01-01', 2550, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+-- 
+-- Structure de la table `visitetechnique`
+-- 
+
+CREATE TABLE `visitetechnique` (
+  `IDVISITETECHNIQUE` int(11) NOT NULL auto_increment,
+  `IDVEHICULE` int(11) NOT NULL,
+  `OBERVATIONVT` char(40) NOT NULL,
+  `DATEVT` date NOT NULL,
+  PRIMARY KEY  (`IDVISITETECHNIQUE`),
+  UNIQUE KEY `VISITETECHNIQUE_PK` (`IDVISITETECHNIQUE`),
+  KEY `FAIRE_FK` (`IDVEHICULE`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- 
+-- Contenu de la table `visitetechnique`
+-- 
+

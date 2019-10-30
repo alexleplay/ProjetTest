@@ -1,0 +1,8 @@
+/* CSS Document */
+a:link { color:#000066; text-decoration:none; font-weight:normal; }
+a:visited { color:#000066; text-decoration:none; font-weight:normal; }
+a:hover { color:#B82130; text-decoration:none; font-weight:normal; }
+a:active { color:#FF9866; text-decoration:none; font-weight:normal; }
+body { color:#000000; background: #FDF2CE; font-size:14pt; font-family:Albert; }
+input { font-size:11pt; font-family:Arial; }
+.Style1 {color: #CC0033;}

@@ -1,0 +1,30 @@
+.tableau {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+a {
+	font-family: Arial Rounded MT Bold;
+	font-size: 12px;
+	font-style: normal;
+	color: #fffcd9; //#B82130;
+}
+		
+a:hover {
+	font-family: Arial Rounded MT Bold;
+	font-size: 12px;
+	font-style: normal;
+	color: #fffcd9; //#f66e00;
+}
+
+.style3 {
+	color: #B82130;
+	font-family: "Baskerville Old Face";
+	font-size: 14px;
+}
+
+.style2 {
+	color: #000066;
+	font-family: "Baskerville Old Face";
+	font-size: 24px;
+}
